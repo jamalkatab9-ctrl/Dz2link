@@ -86,19 +86,13 @@ setInterval(tickTimer,1000);
 /* ============ الشارك + الأكواد ============
    كل صف: زر «شارك» (يفتح رابطه في تبويب جديد) + خانة كود + زر «تأكيد».
    الصف رقم i يقبل CONFIG.codes[i] فقط. الكود الخاطئ لا يُظهر أي شيء.
-   عند صحة الأكواد الأربعة يظهر شعار تيليغرام ورابط CONFIG.telegramUrl. */
-const SAVED_KEY = 'dz2_codes';
+   عند صحة الأكواد الأربعة يظهر شعار تيليغرام ورابط CONFIG.telegramUrl.
+   لا يتم حفظ شيء: تحديث الصفحة يمسح كل الأكواد المدخلة. */
 const norm = s => String(s == null ? '' : s).trim().toLowerCase();
 const isValid = (i, v) => { const c = norm(CONFIG.codes[i]); return c !== '' && norm(v) === c; };
 
-const savedStore = {
-  get(){ try{ const a = JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); return Array.isArray(a) ? a : []; }catch(e){ return []; } },
-  set(a){ try{ localStorage.setItem(SAVED_KEY, JSON.stringify(a)); }catch(e){} }
-};
-
 const rowsEl = $('rows');
 const okFlags = CONFIG.codes.map(()=>false);
-const entered = CONFIG.codes.map(()=> '');
 
 function buildRows(){
   rowsEl.innerHTML = CONFIG.codes.map((_, i)=>`
@@ -121,8 +115,6 @@ function markOk(i){
 function submitRow(i){
   const input = rowsEl.children[i].querySelector('.code-in');
   if (okFlags[i] || !isValid(i, input.value)) return;   // خاطئ: لا شيء يظهر
-  entered[i] = input.value.trim();
-  savedStore.set(entered);
   markOk(i);
 }
 
@@ -140,10 +132,6 @@ rowsEl.addEventListener('click', e=>{
 
 buildRows();
 $('tgCta').href = CONFIG.telegramUrl;
-/* استرجاع الأكواد الصحيحة المحفوظة (وتُتجاهل تلقائياً إذا غيّرتَ الأكواد في config.js) */
-savedStore.get().forEach((v, i)=>{
-  if (i < CONFIG.codes.length && isValid(i, v)){ rowsEl.children[i].querySelector('.code-in').value = v; entered[i] = v; markOk(i); }
-});
 
 window.addEventListener('load', ()=> setTimeout(render,200));
 tickTimer();

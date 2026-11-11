@@ -17,6 +17,13 @@
 
   <h1 class="logo"><img src="logo.jpg" alt="Dz2link" width="800" height="340"></h1>
 
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="القائمة" aria-expanded="false" aria-controls="menuPanel">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <nav class="menu-panel" id="menuPanel" hidden aria-label="القائمة">
+    <div class="list grid" id="menuList"></div>
+  </nav>
+
   <header class="banner">
     <div class="panels" aria-hidden="true">
       <div class="panel"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg></div>
@@ -30,22 +37,13 @@
   <main>
     <p class="season"><span class="tag v wrap">شارك و أدخل سحب تالي بعد إنتهاء عداد الوقت</span></p>
 
-    <section class="partners" aria-labelledby="partnersTitle">
-      <h2 class="partners-title" id="partnersTitle"><span class="tag g big">شركائنا الممولين</span></h2>
-      <div class="partners-logos">
-        <img src="partner-1.png" alt="Link Just" width="84" height="84" loading="lazy">
-        <img src="partner-2.png" alt="ouo.io" width="84" height="84" loading="lazy">
-      </div>
-    </section>
-
     <div class="tg-row">
       <a class="tg" href="https://t.me/Dz2link" target="_blank" rel="noopener noreferrer" aria-label="Dz2link على تيليغرام"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.79l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/></svg></a>
       <a class="tg-text" href="https://t.me/Dz2link" target="_blank" rel="noopener noreferrer">يتم سحب على تيليغرام إنضم لنا</a>
     </div>
 
     <div class="list" id="leadList"></div>
-    <div class="list grid" id="infoList"></div>
-
+    
     <section class="reg" aria-labelledby="regTitle">
       <h2 id="regTitle">شارك الآن وادخل <span class="tag g">السحب</span></h2>
       <p class="hint">اضغط «شارك» وأكمل خطوات الرابط، ثم أدخل الكود الذي ستحصل عليه واضغط «تأكيد». أكمل الصفوف الأربعة.</p>
@@ -56,6 +54,14 @@
         <span class="tg" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.79l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/></svg></span>
         <span class="t">أدخل ID خاص بك لسحب تالي</span>
       </a>
+    </section>
+
+    <section class="partners" aria-labelledby="partnersTitle">
+      <h2 class="partners-title" id="partnersTitle"><span class="tag g big">شركائنا الممولين</span></h2>
+      <div class="partners-logos">
+        <img src="partner-1.png" alt="Link Just" width="84" height="84" loading="lazy">
+        <img src="partner-2.png" alt="ouo.io" width="84" height="84" loading="lazy">
+      </div>
     </section>
   </main>
 

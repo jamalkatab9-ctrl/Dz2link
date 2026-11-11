@@ -11,7 +11,7 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-weight:600;font-size:16.5px;line-height:1.8;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:8px}
-.app{max-width:560px;margin-inline:auto;padding:0 16px 56px}
+.app{position:relative;max-width:560px;margin-inline:auto;padding:0 16px 56px}
 b,strong{font-weight:700}
 
 /* framed words */
@@ -141,3 +141,14 @@ footer{margin-top:36px;padding-top:20px;border-top:3px solid var(--blue);color:v
 .tg-cta[hidden]{display:none}
 .tg-cta .tg{margin:0;flex:none}
 .tg-cta .t{font-family:var(--f-head);font-size:1.15rem;line-height:1.6}
+
+/* ---- زر القائمة ☰ (أعلى اليمين) ---- */
+.menu-btn{position:absolute;top:12px;right:16px;z-index:15;width:46px;height:46px;display:grid;place-content:center;cursor:pointer;background:var(--card);color:var(--blue);border:3px solid var(--blue);border-radius:14px;box-shadow:3px 3px 0 var(--orange)}
+.menu-btn svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round}
+.menu-panel{position:absolute;top:66px;right:16px;left:16px;z-index:15;padding:12px;background:var(--card);border:3px solid var(--blue);border-radius:18px;box-shadow:5px 5px 0 var(--orange)}
+.menu-panel[hidden]{display:none}
+.menu-panel .list.grid{margin-top:0;gap:10px}
+.menu-panel .item.sq{aspect-ratio:auto;min-height:110px}
+
+/* ---- الشركاء في الأسفل ---- */
+.partners{margin-top:30px}

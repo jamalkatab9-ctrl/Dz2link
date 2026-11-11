@@ -74,16 +74,13 @@ function render(){
 function tickTimer(){
   const pill = $('timerPill'), p2 = n=>String(n).padStart(2,'0');
   if (!state.drawAt){
-    const H = 3600000, open = CONFIG.openHours*H, cycle = (CONFIG.openHours+CONFIG.gapHours)*H;
+    /* عدّاد تنازلي يتكرر كل CONFIG.cycleHours (24 ساعة) */
+    const H = 3600000, cycle = (CONFIG.cycleHours || 24) * H;
     const el = (((Date.now() - new Date(CONFIG.cycleAnchor).getTime()) % cycle) + cycle) % cycle;
-    const hms = ms => { const h=Math.floor(ms/H), m=Math.floor(ms%H/60000), s=Math.floor(ms%60000/1000); return `${p2(h)}:${p2(m)}:${p2(s)}`; };
-    if (el < open){
-      pill.dataset.phase='collect';
-      pill.textContent = 'توزيع مكافآت بعد ' + hms(open - el);
-    } else {
-      pill.dataset.phase='countdown';
-      pill.textContent = 'انتهى المؤقت · يتجدد بعد ' + hms(cycle - el);
-    }
+    const left = cycle - el;
+    const h=Math.floor(left/H), m=Math.floor(left%H/60000), s=Math.floor(left%60000/1000);
+    pill.dataset.phase='collect';
+    pill.textContent = 'توزيع مكافآت بعد ' + `${p2(h)}:${p2(m)}:${p2(s)}`;
     return;
   }
   const ms = state.drawAt - Date.now();
@@ -94,55 +91,58 @@ function tickTimer(){
 }
 setInterval(tickTimer,1000);
 
-/* ============ الشارك + الأكواد ============
-   كل صف: زر «شارك» (يفتح رابطه في تبويب جديد) + خانة كود + زر «تأكيد».
-   الصف رقم i يقبل CONFIG.codes[i] فقط. الكود الخاطئ لا يُظهر أي شيء.
-   عند صحة الأكواد الأربعة يظهر شعار تيليغرام ورابط CONFIG.telegramUrl.
-   لا يتم حفظ شيء: تحديث الصفحة يمسح كل الأكواد المدخلة. */
+/* ============ الشارك + الكود ============
+   زر «شارك» يفتح رابطه في تبويب جديد، ثم يُدخل الزائر الكود ويضغط «تأكيد».
+   الكود الخاطئ لا يُظهر أي شيء. عند صحة الكود يظهر شعار تيليغرام (CONFIG.telegramUrl).
+   لا يتم حفظ شيء: تحديث الصفحة يمسح الكود المدخل. */
+const CODE      = CONFIG.code != null ? CONFIG.code : (CONFIG.codes && CONFIG.codes[0]);
+const SHARE_URL = CONFIG.shareUrl || (CONFIG.shareUrls && CONFIG.shareUrls[0]) || '#';
+const SITE_URL  = CONFIG.siteUrl || 'https://jamalkatab9-ctrl.github.io/Dz2link/';
+
 const norm = s => String(s == null ? '' : s).trim().toLowerCase();
-const isValid = (i, v) => { const c = norm(CONFIG.codes[i]); return c !== '' && norm(v) === c; };
+const isValid = v => { const c = norm(CODE); return c !== '' && norm(v) === c; };
 
-const rowsEl = $('rows');
-const okFlags = CONFIG.codes.map(()=>false);
+const codeRow = $('codeRow'), codeIn = $('codeIn'), okBtn = $('okBtn'), shareBtn = $('shareBtn');
+let codeDone = false;
 
-function buildRows(){
-  rowsEl.innerHTML = CONFIG.codes.map((_, i)=>`
-    <div class="row" data-i="${i}">
-      <a class="btn sm share" href="${CONFIG.shareUrls[i] || '#'}" target="_blank" rel="noopener noreferrer">شارك ${i+1}</a>
-      <input class="code-in" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="الكود ${i+1}" aria-label="الكود ${i+1}">
-      <button class="ok-btn" type="button">تأكيد</button>
-    </div>`).join('');
+shareBtn.href = SHARE_URL;
+shareBtn.addEventListener('click', e=>{ if (shareBtn.classList.contains('off')) e.preventDefault(); });
+
+function submitCode(){
+  if (codeDone || !isValid(codeIn.value)) return;   // خاطئ: لا شيء يظهر
+  codeDone = true;
+  codeRow.classList.add('done');
+  codeIn.readOnly = true;
+  okBtn.textContent = '✓'; okBtn.disabled = true;
+  $('tgCta').hidden = false;
 }
-
-function markOk(i){
-  okFlags[i] = true;
-  const row = rowsEl.children[i];
-  row.classList.add('done');
-  row.querySelector('.code-in').readOnly = true;
-  const b = row.querySelector('.ok-btn'); b.textContent = '✓'; b.disabled = true;
-  if (okFlags.every(Boolean)) $('tgCta').hidden = false;
-}
-
-function submitRow(i){
-  const input = rowsEl.children[i].querySelector('.code-in');
-  if (okFlags[i] || !isValid(i, input.value)) return;   // خاطئ: لا شيء يظهر
-  markOk(i);
-}
-
-rowsEl.addEventListener('click', e=>{
-  const b = e.target.closest('.ok-btn'); if (!b) return;
-  submitRow(+b.closest('.row').dataset.i);
-});
-rowsEl.addEventListener('keydown', e=>{
-  if (e.key !== 'Enter' || !e.target.classList.contains('code-in')) return;
-  submitRow(+e.target.closest('.row').dataset.i);
-});
-rowsEl.addEventListener('click', e=>{
-  const a = e.target.closest('.share'); if (a && a.classList.contains('off')) e.preventDefault();
-});
-
-buildRows();
+okBtn.addEventListener('click', submitCode);
+codeIn.addEventListener('keydown', e=>{ if (e.key === 'Enter') submitCode(); });
 $('tgCta').href = CONFIG.telegramUrl;
+
+/* ============ مشاركة الموقع مع الأصدقاء ============
+   يفتح خيار المشاركة في الهاتف (Web Share API)، وإن لم يتوفر يُنسخ الرابط. */
+const shareNote = $('shareNote');
+let noteTimer = null;
+function note(msg){
+  shareNote.textContent = msg;
+  clearTimeout(noteTimer);
+  noteTimer = setTimeout(()=>{ shareNote.textContent = ''; }, 3500);
+}
+async function shareSite(){
+  const data = { title:'Dz2link', text:'منصة Dz2link: شارك واربح جوائز مالية كل يوم 🎁', url: SITE_URL };
+  if (navigator.share){
+    try{ await navigator.share(data); return; }
+    catch(err){ if (err && err.name === 'AbortError') return; }   // أغلق المستخدم النافذة
+  }
+  try{
+    await navigator.clipboard.writeText(SITE_URL);
+    note('تم نسخ الرابط، الصقه عند أصدقائك ✅');
+  }catch(err){
+    window.prompt('انسخ الرابط وشاركه مع أصدقائك:', SITE_URL);
+  }
+}
+$('shareSite').addEventListener('click', shareSite);
 
 window.addEventListener('load', ()=> setTimeout(render,200));
 tickTimer();

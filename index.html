@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
 <title>Dz2link · سحب الـ 1000 مسجّل</title>
 <meta name="description" content="منصة Dz2link: شارك وأدخل السحب اليومي على جوائز مالية.">
 <meta name="theme-color" content="#F3F7FA">
@@ -69,8 +70,19 @@
   <div id="sheetBody"></div>
 </div>
 
-<script src="config.js" defer></script>
-<script src="content.js" defer></script>
-<script src="app.js" defer></script>
+<script>
+/* تحميل الملفات بالترتيب مع رقم فريد في كل زيارة حتى لا يعرض المتصفح نسخة قديمة من config.js */
+(function(){
+  var v = Date.now(), files = ['config.js','content.js','app.js'], i = 0;
+  function next(){
+    if (i >= files.length) return;
+    var s = document.createElement('script');
+    s.src = files[i++] + '?v=' + v;
+    s.onload = next;
+    document.body.appendChild(s);
+  }
+  next();
+})();
+</script>
 </body>
 </html>

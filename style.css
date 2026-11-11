@@ -152,3 +152,10 @@ footer{margin-top:36px;padding-top:20px;border-top:3px solid var(--blue);color:v
 
 /* ---- الشركاء في الأسفل ---- */
 .partners{margin-top:30px}
+
+/* ---- زر مشاركة الموقع ---- */
+.sharesite{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px auto 0;padding:0;background:none;border:0;cursor:pointer;font:inherit;color:inherit}
+.sharesite .tg{margin:0}
+.sharesite .tg svg{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sharesite:hover .tg-text{color:var(--orange-text)}
+.share-note{text-align:center;min-height:1.8em;margin-top:4px}

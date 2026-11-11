@@ -42,13 +42,25 @@
       <a class="tg-text" href="https://t.me/Dz2link" target="_blank" rel="noopener noreferrer">يتم سحب على تيليغرام إنضم لنا</a>
     </div>
 
+    <button class="sharesite" id="shareSite" type="button">
+      <span class="tg" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg></span>
+      <span class="tg-text">شارك الموقع مع أصدقائك</span>
+    </button>
+    <p class="hint share-note" id="shareNote" role="status" aria-live="polite"></p>
+
     <div class="list" id="leadList"></div>
     
     <section class="reg" aria-labelledby="regTitle">
       <h2 id="regTitle">شارك الآن وادخل <span class="tag g">السحب</span></h2>
-      <p class="hint">اضغط «شارك» وأكمل خطوات الرابط، ثم أدخل الكود الذي ستحصل عليه واضغط «تأكيد». أكمل الصفوف الأربعة.</p>
+      <p class="hint">اضغط «شارك» وأكمل خطوات الرابط، ثم أدخل الكود الذي ستحصل عليه واضغط «تأكيد».</p>
 
-      <div class="rows" id="rows"></div>
+      <div class="rows" id="rows">
+        <div class="row" id="codeRow">
+          <a class="btn sm share" id="shareBtn" href="#" target="_blank" rel="noopener noreferrer">شارك</a>
+          <input class="code-in" id="codeIn" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="أدخل الكود" aria-label="الكود">
+          <button class="ok-btn" id="okBtn" type="button">تأكيد</button>
+        </div>
+      </div>
 
       <a class="tg-cta" id="tgCta" href="#" target="_blank" rel="noopener noreferrer" hidden>
         <span class="tg" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.79l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/></svg></span>
@@ -60,7 +72,6 @@
       <h2 class="partners-title" id="partnersTitle"><span class="tag g big">شركائنا الممولين</span></h2>
       <div class="partners-logos">
         <img src="partner-1.png" alt="Link Just" width="84" height="84" loading="lazy">
-        <img src="partner-2.png" alt="ouo.io" width="84" height="84" loading="lazy">
       </div>
     </section>
   </main>

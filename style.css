@@ -57,7 +57,6 @@ b,strong{font-weight:700}
 .tg-text:hover{color:var(--orange-text)}
 
 /* season + pool */
-.season{text-align:center;margin-top:10px;font-family:var(--f-head);font-size:1.7rem}
 .tg{display:flex;width:58px;height:58px;margin:14px auto 0;border-radius:50%;background:var(--blue);align-items:center;justify-content:center;border:3px solid var(--blue);box-shadow:3px 3px 0 var(--orange);transition:transform .15s,box-shadow .15s}
 .tg:hover{transform:translate(-2px,-2px) scale(1.06);box-shadow:5px 5px 0 var(--orange)}
 .tg svg{width:30px;height:30px;fill:#fff}
@@ -159,3 +158,9 @@ footer{margin-top:36px;padding-top:20px;border-top:3px solid var(--blue);color:v
 .sharesite .tg svg{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .sharesite:hover .tg-text{color:var(--orange-text)}
 .share-note{text-align:center;min-height:1.8em;margin-top:4px}
+
+/* ---- خطوات الربح ---- */
+.steps-title{font-family:var(--f-head);font-size:1.2rem;line-height:1.7;color:var(--blue);margin-top:4px}
+.steps{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}
+.steps li{position:relative;padding-inline-start:26px;color:var(--ink);line-height:1.7}
+.steps li::before{content:"";position:absolute;inset-inline-start:0;top:.55em;width:12px;height:12px;border-radius:50%;background:var(--orange);border:2px solid var(--blue)}

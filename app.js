@@ -15,7 +15,7 @@ function card(id, ic, title, sub, cls=''){
   return `<button class="item sq ${cls}" data-open="${id}"><span class="ico">${icon(ic)}</span><span class="tx"><span class="tt">${title}</span></span></button>`;
 }
 $('leadList').innerHTML = card('prizes','trophy','لوحة الجوائز','اضغط لمعرفة مكافأة كل فائز من الـ 20 فائز يومياً.','lead');
-$('infoList').innerHTML = [
+$('menuList').innerHTML = [
   card('how','help','كيف يعمل السحب','أربع مراحل واضحة من التسجيل حتى الجائزة.'),
   card('fair','shield','الشفافية والتحقق','كل خطوات السحب على بث مباشر يومي.'),
   card('ads','ads','التمويل والإعلانات','ما المطلوب منك فقط.'),
@@ -51,6 +51,17 @@ document.addEventListener('keydown', e=>{ if (e.key==='Escape' && sheet.classLis
 let y0=null;
 sheet.addEventListener('touchstart', e=>{ if (sheet.scrollTop===0) y0=e.touches[0].clientY; },{passive:true});
 sheet.addEventListener('touchend', e=>{ if (y0!==null && e.changedTouches[0].clientY - y0 > 90) closeSheet(); y0=null; },{passive:true});
+
+/* ============ قائمة ☰ (أعلى اليمين) ============ */
+const menuBtn = $('menuBtn'), menuPanel = $('menuPanel');
+function setMenu(open){
+  menuPanel.hidden = !open;
+  menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+menuBtn.addEventListener('click', e=>{ e.stopPropagation(); setMenu(menuPanel.hidden); });
+menuPanel.addEventListener('click', e=>{ if (e.target.closest('[data-open]')) setMenu(false); });
+document.addEventListener('click', e=>{ if (!menuPanel.hidden && !menuPanel.contains(e.target)) setMenu(false); });
+document.addEventListener('keydown', e=>{ if (e.key==='Escape' && !menuPanel.hidden){ setMenu(false); menuBtn.focus(); } });
 
 /* ============ العدّاد والتقدم ============ */
 function render(){
